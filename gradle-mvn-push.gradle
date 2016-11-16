@@ -16,6 +16,8 @@
 
 apply plugin: 'maven'
 apply plugin: 'signing'
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: "com.jfrog.bintray"
 
 def isReleaseBuild() {
     return VERSION_NAME.contains("SNAPSHOT") == false
@@ -52,7 +54,7 @@ afterEvaluate { project ->
                 pom.groupId = GROUP
                 pom.artifactId = POM_ARTIFACT_ID
                 pom.version = VERSION_NAME
-                
+
                 println "Deploying " + GROUP + ":" + POM_ARTIFACT_ID + ":" + VERSION_NAME
 
                 repository(url: getReleaseRepositoryUrl()) {
@@ -122,13 +124,43 @@ afterEvaluate { project ->
         }
         archives androidJavadocsJar
     }
-    
+
     // http://stackoverflow.com/questions/22528767/how-to-work-around-the-stricter-java-8-javadoc-when-using-maven
-  if (JavaVersion.current().isJava8Compatible()) {
-    allprojects {
-      tasks.withType(Javadoc) {
-        options.addStringOption('Xdoclint:none', '-quiet')
-      }
+    if (JavaVersion.current().isJava8Compatible()) {
+        allprojects {
+            tasks.withType(Javadoc) {
+                options.addStringOption('Xdoclint:none', '-quiet')
+            }
+        }
     }
-  }
+}
+
+group = GROUP // Maven Group ID for the artifact
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+// https://github.com/bintray/gradle-bintray-plugin
+bintray {
+    user = properties.getProperty("bintray.user")
+    key = properties.getProperty("bintray.apikey")
+    version = VERSION_NAME
+
+    configurations = ['archives']
+    pkg {
+        repo = "maven"
+        // it is the name that appears in bintray when logged
+        name = POM_ARTIFACT_ID
+        websiteUrl = POM_URL
+        vcsUrl = POM_GIT_URL
+        licenses = [POM_LICENCE_NAME]
+        publish = true
+        version {
+            gpg {
+                sign = true //Determines whether to GPG sign the files. The default is false
+                passphrase = properties.getProperty("bintray.gpg.password")
+                //Optional. The passphrase for GPG signing'
+            }
+        }
+    }
 }
