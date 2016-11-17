@@ -15,7 +15,7 @@ Get a library project up and running.
 ### 2. Create project root gradle.properties
 Make a gradle.properties file in your project's root directory. If the file already exists just add the missing fields.
 
-```properties
+```groovy
 VERSION_NAME=1.0.0
 //When pushing to oss.sonatype.org append '-SNAPSHOT' to the version name
 //to publish to maven's snapshot repo.
