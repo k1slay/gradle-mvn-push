@@ -59,18 +59,18 @@ NEXUS_PASSWORD=p@$$\^/0rd
 ```
 
 #### Maven central (hosted by oss.sonatype.org)
+Extra properties needed only for maven central
 
 ```properties
-//Extra properties needed only for maven central
 signing.keyId=myid
 signing.password=Y0urP@$$\^/0rd
 signing.secretKeyRingFile=~/.gnupg/secring.gpg
 ```
 
 #### jCenter (hosted ny bintray.com)
+Extra properties needed only for bintray
 
 ```properties
-//Extra properties needed only for bintray
 BINTRAY_USER=username
 BINTRAY_API_KEY=y0urapikeyp1eas3
 BINTRAY_GPG_PASSWORD=p@$$\^/0rd
