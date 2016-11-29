@@ -76,7 +76,7 @@ BINTRAY_API_KEY=y0urapikeyp1eas3
 BINTRAY_GPG_PASSWORD=p@$$\^/0rd
 ```
 
-### 5. Call the script from each sub-modules build.gradle
+### 5. Update each sub-module's `build.gradle`
 
 Add the following at the end of each `build.gradle` that you wish to upload:
 
@@ -84,7 +84,21 @@ Add the following at the end of each `build.gradle` that you wish to upload:
 apply from: 'https://raw.githubusercontent.com/k1slay/gradle-mvn-push/master/gradle-mvn-push.gradle'
 ```
 
-### 6. Build and Push
+### 6. Update root `build.gradle` (only for jCenter)
+
+Skip if only publishing to mavenCentral
+
+Add these lines in dependencies
+
+```groovy
+dependencies {
+    ...
+    classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
+    classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
+}
+```
+
+### 7. Build and Push
 
 You can now build and push:
 
